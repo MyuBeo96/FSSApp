@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="m_label_size">16sp</dimen>
+
+    <dimen name="m_text_height">30dp</dimen>
+
+    <dimen name="m_edittext_size">16sp</dimen>
+
+    <dimen name="m_height_header">50dp</dimen>
+
+    <dimen name="m_margin">10dp</dimen>
+
+    <dimen name="m_margin_logo">10dp</dimen>
+
+</resources>

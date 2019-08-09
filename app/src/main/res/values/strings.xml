@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">FSSApp</string>
+    <string name="btn_login">Đăng nhập</string>
+    <string name="text_accountverification">Xác thực tài khoản</string>
+    <string name="edt_usename">Tên đăng nhập</string>
+    <string name="edt_password">Mật khẩu</string>
+</resources>
