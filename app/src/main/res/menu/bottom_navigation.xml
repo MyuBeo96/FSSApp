@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/record_time"
+        android:icon="@drawable/ic_record_voice_over_black_24dp"
+        android:title="Record Task"
+        />
+
+    <item android:id="@+id/create_time"
+        android:icon="@drawable/ic_create_black_24dp"
+        android:title="Create Task"
+        />
+
+    <item android:id="@+id/timesheet"
+        android:icon="@drawable/ic_record_voice_over_black_24dp"
+        android:title="Time Sheets"
+        />
+
+</menu>
