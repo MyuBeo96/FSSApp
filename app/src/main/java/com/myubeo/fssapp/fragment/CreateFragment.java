@@ -18,7 +18,6 @@ import java.util.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 public class CreateFragment extends Fragment {
 
@@ -26,15 +25,8 @@ public class CreateFragment extends Fragment {
     TextView time_morning;
     EditText duration_Hour;
     EditText duration_Minutes;
-    int hourStarts = 8;
-    int minuteStarts = 30;
-    int hourMorning = 12;
-    int minuteMorning = 0;
-    int duration = 3;
 
-    int timeWork;
-    int hours;
-    int minutes;
+    long timeOnPoint;
 
     private final String pattern = "HH:mm";
     private final String startTime = "08:30";
@@ -59,14 +51,18 @@ public class CreateFragment extends Fragment {
         seekbar_morning.setProgress(210);
         seekbar_morning.incrementProgressBy(15);
 
-//        time_morning.setText(String.valueOf(hourStarts)+ "h" + String.valueOf(minuteStarts) + " - " + String.valueOf(hourMorning) +
-//                "h" + ltrim(String.valueOf(minuteMorning), "0", 2));
-
         String value = startTime + " - " + finishTime;
         time_morning.setText(value);
-//
-//        duration_Minutes.setText(String.valueOf(minuteStarts));
-//        duration_Hour.setText(String.valueOf(duration));
+
+        try {
+            long duration = df.parse(finishTime).getTime() -  df.parse(startTime).getTime();
+            long hours = ((duration / 1000) / 60) / 60;
+            long minutes = (((duration / 1000) / 60) - hours * 60) % 60;
+            duration_Hour.setText(String.valueOf(hours));
+            duration_Minutes.setText(String.valueOf(minutes));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         initListener();
 
     }
@@ -88,20 +84,10 @@ public class CreateFragment extends Fragment {
                     time_morning.setText(startTime + " - " + df.format(dateOnPoint));
                     duration_Hour.setText(showHourDf.format(new Date (midnight.getTime() + progressInMilliSec)));
                     duration_Minutes.setText(showMinuteDf.format(new Date (midnight.getTime() + progressInMilliSec)));
-                    DateFormat dffff = new SimpleDateFormat("HH:mm:ss");
-//                    Log.d("test", "onProgressChangedsdsdsd: " + dffff.format(caculatedTime));
 
                 } catch (ParseException e) {
-//                    e.printStackTrace();
-                    //ko the loi
+                    e.printStackTrace();
                 }
-//                    timeWork = 510 + progress;
-//                    hours = timeWork / 60;
-//                    minutes = (timeWork - hours * 60) % 60;
-//                    time_morning.setText(String.valueOf(hourStarts)+ "h" + String.valueOf(minuteStarts) + " - " + String.valueOf(hours) +
-//                        "h" + ltrim(String.valueOf(minutes), "0", 2));
-//                    duration_Minutes.setText(String.valueOf(progress % 60));
-//                    duration_Hour.setText(String.valueOf(progress / 60));
 
 
             }
@@ -116,16 +102,6 @@ public class CreateFragment extends Fragment {
 
             }
         });
-    }
-
-    private String ltrim(String input, String filledCharacter, int targetLength) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("");
-        for (int i = 1 ; i <= targetLength - input.length() ; i++) {
-            sb.append(filledCharacter);
-        }
-        sb.append(input);
-        return sb.toString();
     }
 
 }
