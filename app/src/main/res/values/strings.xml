@@ -4,4 +4,12 @@
     <string name="text_accountverification">Xác thực tài khoản</string>
     <string name="edt_usename">Tên đăng nhập</string>
     <string name="edt_password">Mật khẩu</string>
+    <string name="working_desc">Miêu tả</string>
+    <string name="working_day">Ngày</string>
+    <string name="time">Thời gian</string>
+    <string name="logout">Đăng xuất</string>
+    <string name="create">Tạo mới</string>
+    <string name="text_from">Từ</string>
+    <string name="text_to">Đến</string>
+    <string name="Duration">Thời lượng</string>
 </resources>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="20dp"
+    android:background="@drawable/background_input" >
+
+    <EditText
+        android:textCursorDrawable="@drawable/shape_textcursoredittext"
+        android:id="@+id/edt_EdittextDate"
+        style="@style/EditText_Style1"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_toLeftOf="@+id/btn_EdittextDate"
+        android:hint="DD/MM/YYYY"
+        android:singleLine="true"
+        android:inputType="date"
+        android:textColorHint="@color/text_hint_color_bgwhite"
+        android:textSize="20sp" />
+
+    <ImageButton
+        android:id="@+id/btn_EdittextDate"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/ic_arrow_drop_down_black_24dp"
+        android:padding="0dp" />
+
+</RelativeLayout>

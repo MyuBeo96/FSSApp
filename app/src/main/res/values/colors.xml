@@ -8,6 +8,8 @@
     <color name="colorLogin">#F3F3F3</color>
     <color name="colorInput">#E3E3E3</color>
     <color name="colorWhite">#FFFFFF</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorBackground">#F9F9F9</color>
 
     <color name="label_text_color">#FFFFFF</color>
 
@@ -22,4 +24,5 @@
     <color name="text_hint_color_bgwhite">#30000000</color>
 
     <color name="press_blue">#00AEFF</color>
+    <color name="press_red">#FFFF0000</color>
 </resources>

@@ -5,4 +5,12 @@
     <string name="text_accountverification">Account verification</string>
     <string name="edt_usename">Use name</string>
     <string name="edt_password">Password</string>
+    <string name="working_desc">Working Desc</string>
+    <string name="working_day">Working day</string>
+    <string name="time">Time</string>
+    <string name="logout">Logout</string>
+    <string name="create">Create</string>
+    <string name="text_from">From</string>
+    <string name="text_to">To</string>
+    <string name="Duration">Duration</string>
 </resources>
