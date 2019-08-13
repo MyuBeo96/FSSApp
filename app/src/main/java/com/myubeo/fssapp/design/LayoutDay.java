@@ -29,7 +29,7 @@ public class LayoutDay extends LinearLayout {
             @Override
             public void onClick(View v) {
                 LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-                View viewTime = layoutInflater.inflate(R.layout.layout_day, null);
+                View viewTime = layoutInflater.inflate(R.layout.layout_time, null);
                 layout_time.addView(viewTime);
 
             }

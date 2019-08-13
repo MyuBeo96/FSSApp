@@ -41,7 +41,7 @@ public class CreateFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 LayoutInflater factory = LayoutInflater.from(getContext());
-                View myView = factory.inflate(R.layout.item_day, null);
+                View myView = factory.inflate(R.layout.layout_day, null);
                 layout_day.addView(myView);
             }
         });
