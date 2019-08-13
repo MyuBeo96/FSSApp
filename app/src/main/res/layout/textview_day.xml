@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginLeft="20dp"
-    android:background="@drawable/background_input" >
+    android:background="@drawable/background_day" >
 
     <EditText
         android:textCursorDrawable="@drawable/shape_textcursoredittext"
@@ -15,8 +15,7 @@
         android:hint="DD/MM/YYYY"
         android:singleLine="true"
         android:inputType="date"
-        android:textColorHint="@color/text_hint_color_bgwhite"
-        android:textSize="20sp" />
+        android:textColorHint="@color/text_hint_color_bgwhite"/>
 
     <ImageButton
         android:id="@+id/btn_EdittextDate"

@@ -39,6 +39,16 @@
         <item name="android:textColorHint">@color/edittext_hint_color</item>
     </style>
 
+    <style name="EditText_Style2">
+        <item name="android:textSize">@dimen/m_edittext_size</item>
+        <item name="android:background">@color/edittext_background_color</item>
+        <item name="android:textColor">@color/black_text</item>
+        <item name="android:layout_height">@dimen/m_text_height</item>
+        <item name="android:selectAllOnFocus">true</item>
+        <item name="android:inputType">textMultiLine|textNoSuggestions</item>
+        <item name="android:textColorHint">@color/edittext_hint_color</item>
+    </style>
+
     <style name="TextView_Style">
         <item name="android:textSize">@dimen/m_text_size</item>
         <item name="android:textStyle">normal</item>
