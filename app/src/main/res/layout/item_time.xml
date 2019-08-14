@@ -34,7 +34,6 @@
                     android:id="@+id/seekbar_morning"
                     android:layout_width="match_parent"
                     android:layout_height="28dp"
-                    android:max="210"
                     android:min="0"
                     android:progress="0" />
             </LinearLayout>

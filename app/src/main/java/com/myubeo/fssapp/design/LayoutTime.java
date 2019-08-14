@@ -2,11 +2,9 @@ package com.myubeo.fssapp.design;
 
 import android.app.Service;
 import android.content.Context;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.content.SharedPreferences;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -19,6 +17,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class LayoutTime extends LinearLayout {
 
     Context context;
@@ -27,10 +27,13 @@ public class LayoutTime extends LinearLayout {
     EditText duration_Hour;
     EditText duration_Minutes;
     EditText edt_desc;
+    int progressSave;
+    public static final String MY_PROGRESS = "MyProgress";
+    public static final int MAX_PROGRESS = 210;
+    public static final int PROGRESS = 15;
 
     private final String pattern = "HH:mm";
     private final String startTime = "08:30";
-    private final String finishTime = "12:00";
     private DateFormat df = new SimpleDateFormat(pattern);
     private DateFormat showHourDf = new SimpleDateFormat("HH");
     private DateFormat showMinuteDf = new SimpleDateFormat("mm");
@@ -48,24 +51,32 @@ public class LayoutTime extends LinearLayout {
         duration_Minutes = findViewById(R.id.duration_Minutes);
         edt_desc = findViewById(R.id.edt_desc);
 
-        duration_Hour.addTextChangedListener(new PinTextWatcher(duration_Hour));
-        duration_Minutes.addTextChangedListener(new PinTextWatcher(duration_Minutes));
+        seekbar_morning.setMax(MAX_PROGRESS);
+        seekbar_morning.setProgress(MAX_PROGRESS);
+        seekbar_morning.incrementProgressBy(PROGRESS);
 
-        seekbar_morning.setProgress(210);
-        seekbar_morning.incrementProgressBy(15);
+        duration(MAX_PROGRESS);
 
-        String value = startTime + " - " + finishTime;
-        time_morning.setText(value);
-
-        try {
-            long duration = df.parse(finishTime).getTime() -  df.parse(startTime).getTime();
-            long hours = ((duration / 1000) / 60) / 60;
-            long minutes = (((duration / 1000) / 60) - hours * 60) % 60;
-            duration_Hour.setText(String.valueOf(hours));
-            duration_Minutes.setText(String.valueOf(minutes));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+//        long timeOnPoint1 = 0;
+//        try {
+//            timeOnPoint1 = df.parse(startTime).getTime() + 210 * 1000 * 60;
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//        Date dateOnPoint = new Date(timeOnPoint1);
+//
+//        String value = startTime + " - " + df.format(dateOnPoint);
+//        time_morning.setText(value);
+//
+//        try {
+//            long duration = df.parse(df.format(dateOnPoint)).getTime() -  df.parse(startTime).getTime();
+//            long hours = ((duration / 1000) / 60) / 60;
+//            long minutes = (((duration / 1000) / 60) - hours * 60) % 60;
+//            duration_Hour.setText(String.valueOf(hours));
+//            duration_Minutes.setText(String.valueOf(minutes));
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
 
         initListener();
     }
@@ -77,20 +88,27 @@ public class LayoutTime extends LinearLayout {
                 progress = progress / 15;
                 progress = progress * 15;
 
-                long progressInMilliSec = progress * 60 * 1000; //progress = 15 minutes
+                progressSave = progress;
+                SharedPreferences.Editor editor = getContext().getSharedPreferences(MY_PROGRESS, MODE_PRIVATE).edit();
+                editor.putInt("progress", progressSave);
+                editor.apply();
 
-                try {
-                    long timeOnPoint = df.parse(startTime).getTime() + progressInMilliSec;
-                    Date dateOnPoint = new Date(timeOnPoint);
-                    Date midnight = df.parse("00:00");
+//                long progressInMilliSec = progress * 60 * 1000; //progress = 15 minutes
+//
+//                try {
+//                    long timeOnPoint = df.parse(startTime).getTime() + progressInMilliSec;
+//                    Date dateOnPoint = new Date(timeOnPoint);
+//                    Date midnight = df.parse("00:00");
+//
+//                    time_morning.setText(startTime + " - " + df.format(dateOnPoint));
+//                    duration_Hour.setText(showHourDf.format(new Date (midnight.getTime() + progressInMilliSec)));
+//                    duration_Minutes.setText(showMinuteDf.format(new Date (midnight.getTime() + progressInMilliSec)));
+//
+//                } catch (ParseException e) {
+//                    e.printStackTrace();
+//                }
 
-                    time_morning.setText(startTime + " - " + df.format(dateOnPoint));
-                    duration_Hour.setText(showHourDf.format(new Date (midnight.getTime() + progressInMilliSec)));
-                    duration_Minutes.setText(showMinuteDf.format(new Date (midnight.getTime() + progressInMilliSec)));
-
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                duration(progress);
 
 
             }
@@ -108,42 +126,20 @@ public class LayoutTime extends LinearLayout {
 
     }
 
-    public class PinTextWatcher implements TextWatcher {
+    private void duration(int progress){
+        long progressInMilliSec = progress * 60 * 1000; //progress = 15 minutes
 
-        private View view;
+        try {
+            long timeOnPoint = df.parse(startTime).getTime() + progressInMilliSec;
+            Date dateOnPoint = new Date(timeOnPoint);
+            Date midnight = df.parse("00:00");
 
-        private PinTextWatcher(View view) {
-            this.view = view;
-        }
+            time_morning.setText(startTime + " - " + df.format(dateOnPoint));
+            duration_Hour.setText(showHourDf.format(new Date (midnight.getTime() + progressInMilliSec)));
+            duration_Minutes.setText(showMinuteDf.format(new Date (midnight.getTime() + progressInMilliSec)));
 
-        @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-        }
-
-        @Override
-        public void afterTextChanged(Editable editable) {
-            String text = editable.toString();
-            if (text.length() != 2)
-                return;
-            switch (view.getId()) {
-                case R.id.duration_Hour:
-                    if (text.length() == 2) {
-                        duration_Minutes.requestFocus();
-
-                    }
-                    break;
-
-                case R.id.duration_Minutes:
-                    if (text.length() == 2)
-                        edt_desc.requestFocus();
-                        break;
-            }
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
     }
 }
