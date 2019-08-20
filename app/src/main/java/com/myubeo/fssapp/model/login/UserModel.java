@@ -1,6 +1,6 @@
 package com.myubeo.fssapp.model.login;
 
-public class UserModel implements IUser{
+public class UserModel{
     String name;
     String password;
 
@@ -21,13 +21,13 @@ public class UserModel implements IUser{
         return password;
     }
 
-    @Override
-    public int checkUserValidity(String name, String passwd) {
-        if (name==null||passwd==null||!name.equals(getName())||!passwd.equals(getPassword())){
-            return -1;
-        }
-        return 0;
-    }
+//    @Override
+//    public int checkUserValidity(String name, String passwd) {
+//        if (name==null||passwd==null||!name.equals(getName())||!passwd.equals(getPassword())){
+//            return -1;
+//        }
+//        return 0;
+//    }
 
     public void setPasswd(String password) {
         this.password = password;

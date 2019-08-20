@@ -1,6 +1,7 @@
 package com.myubeo.fssapp.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,12 +13,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 
+import com.myubeo.fssapp.LoginActivity;
 import com.myubeo.fssapp.R;
 import com.myubeo.fssapp.adapter.ProjectAdapter;
 import com.myubeo.fssapp.model.createModel.Project;
@@ -29,6 +32,7 @@ public class CreateFragment extends Fragment {
 
     ImageButton btn_add_day;
     EditText edt_desc;
+    Button btn_logout;
     LinearLayout layout_day;
     Spinner title_project;
     ProjectAdapter projectAdapter;
@@ -46,6 +50,7 @@ public class CreateFragment extends Fragment {
         edt_desc = (EditText) view.findViewById(R.id.edt_desc);
         layout_day = (LinearLayout) view.findViewById(R.id.layout_day);
         title_project = (Spinner) view.findViewById(R.id.title_project);
+        btn_logout = (Button) view.findViewById(R.id.btn_logout);
 
 //        SharedPreferences sharedPreferences = getContext().getSharedPreferences("project", Context.MODE_PRIVATE);
 //        String name = sharedPreferences.getString("nameProject", "Default");
@@ -76,6 +81,14 @@ public class CreateFragment extends Fragment {
     }
 
     private void initListener(){
+        btn_logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
         btn_add_day.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

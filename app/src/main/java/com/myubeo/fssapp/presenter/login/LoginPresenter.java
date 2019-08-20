@@ -38,7 +38,7 @@ public class LoginPresenter implements ILoginPresenter {
     }
 
     private void initUser(){
-        user = new UserModel("linh.vu","123456");
+//        user = new UserModel("linh.vu","123456");
     }
 
 }
