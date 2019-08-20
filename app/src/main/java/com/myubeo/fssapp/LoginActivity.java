@@ -87,12 +87,19 @@ public class LoginActivity extends AppCompatActivity {
                     userModelList.add(userName);
                     userModelList.add(passWord);
 
-                    List<String> userList = new ArrayList<>(userModelList);
+                    List<String>  bodyuser = new ArrayList<>(userModelList);
 
-                    User user = new User("2.0", "authenticate", userList, 1);
+                    User user  = new User();
+                    user.setJsonrpc("2.0");
+                    user.setMethod("authenticate");
+                    user.setParams(bodyuser);
+                    user.setId(1);
 
                     APIInterface client = APIUtils.getData();
+
+
                     Call<User> userCall = client.Login(user);
+
                     userCall.enqueue(new Callback<User>() {
                         @Override
                         public void onResponse(Call<User> call, Response<User> response) {
