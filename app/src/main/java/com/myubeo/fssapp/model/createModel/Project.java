@@ -1,51 +1,99 @@
 package com.myubeo.fssapp.model.createModel;
 
+import android.util.Log;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.myubeo.fssapp.MainActivity;
+import com.myubeo.fssapp.connect.APIInterface;
+import com.myubeo.fssapp.connect.APIUtils;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Project implements Comparable<Project>{
 
     private static List<Project> recentList = new ArrayList<>();
     private static List<Project> constantsObjectList = new ArrayList<>();
-
-    static
-    {
-        Project _1 = new Project("1", "Java");
-        Project _2 =  new Project("2", "Android");
-        Project _3 = new Project("3", "PHP");
-        Project _4 = new Project("4", "C#");
-        Project _5 = new Project("5", "ASP.NET");
-        Project _6 = new Project("6", "Laravel");
-        Project _7 = new Project("7", "React native");
-        Project _8 = new Project("8", "IOS");
-        constantsObjectList.add(_1);
-        constantsObjectList.add(_2);
-        constantsObjectList.add(_3);
-        constantsObjectList.add(_4);
-        constantsObjectList.add(_5);
-        constantsObjectList.add(_6);
-        constantsObjectList.add(_7);
-        constantsObjectList.add(_8);
-        _1.time = 1;
-        _2.time = 2;
-        _3.time = 3;
-        _4.time = 4;
-        _5.time = 5;
-        _6.time = 6;
-        _7.time = 7;
-        _8.time = 8;
-    }
-
     private String id;
     private String projectName;
     private long time;
+    private static String name = null;
+    private static String projectID = null;
 
-    public Project(String id, String projectName) {
+    public Project( String id, String projectName) {
         this.id = id;
         this.projectName = projectName;
         this.time = System.currentTimeMillis();
         addToRecentList(this);
+    }
+
+    static
+    {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("id", "1");
+        jsonObject.addProperty("jsonrpc", "2.0");
+        jsonObject.addProperty("method", "getProjects");
+
+        JsonArray paramsArray = new JsonArray();
+        paramsArray.add(MainActivity.getApiKey());
+        jsonObject.add("params", paramsArray);
+
+        APIInterface client = APIUtils.getData();
+
+        Call<JsonObject> activityList = client.postRawJSON(jsonObject);
+
+        activityList.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.isSuccessful()) {
+                    try {
+                        JSONObject object = new JSONObject(new Gson().toJson(response.body()));
+
+                        JSONArray items = object.getJSONObject("result").getJSONArray("items");
+
+                        for(int i = 0; i < items.length(); i++) {
+                            JSONObject key = items.getJSONObject(i);
+                            name = key.getString("name");
+                            projectID = key.getString("projectID");
+                            Project project = new Project(projectID, name);
+                            constantsObjectList.add(project);
+                            project.time = i;
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+
+            }
+        });
+        Collections.sort(constantsObjectList, new ProjectComparator());
+    }
+
+    public static String getName()
+    {
+        return name;
+    }
+
+    public static String getProjectID()
+    {
+        return projectID;
     }
 
     private void addToRecentList(Project project) {
@@ -58,6 +106,7 @@ public class Project implements Comparable<Project>{
             recentList.remove(3);
         }
         recentList.add(this);
+
     }
 
     public String getId() {
@@ -107,6 +156,13 @@ public class Project implements Comparable<Project>{
         } else {
             return false;
         }
+    }
 
+    static class ProjectComparator implements Comparator<Project> {
+
+        @Override
+        public int compare(Project o1, Project o2) {
+            return o2.projectName.compareTo(o1.projectName);
+        }
     }
 }

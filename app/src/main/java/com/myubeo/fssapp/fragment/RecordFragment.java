@@ -14,6 +14,11 @@ import com.myubeo.fssapp.R;
 
 public class RecordFragment extends Fragment {
 
+    public static RecordFragment newInstance() {
+        RecordFragment fragment = new RecordFragment();
+        return fragment;
+    }
+
     LinearLayout linearLayout;
 
     @Nullable

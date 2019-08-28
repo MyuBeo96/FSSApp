@@ -8,7 +8,7 @@
     <TextView
         android:id="@+id/nameProject"
         style="@style/TextView_Style"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="android_1"

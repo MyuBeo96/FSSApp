@@ -1,8 +1,6 @@
 package com.myubeo.fssapp.fragment;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,31 +10,42 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
-
 import com.myubeo.fssapp.LoginActivity;
 import com.myubeo.fssapp.R;
+import com.myubeo.fssapp.adapter.ActivityAdapter;
 import com.myubeo.fssapp.adapter.ProjectAdapter;
+import com.myubeo.fssapp.model.createModel.Activity;
 import com.myubeo.fssapp.model.createModel.Project;
+import com.myubeo.fssapp.model.createModel.ProjectModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CreateFragment extends Fragment {
 
+    public static CreateFragment newInstance() {
+        CreateFragment fragment = new CreateFragment();
+        return fragment;
+    }
+
     ImageButton btn_add_day;
     EditText edt_desc;
     Button btn_logout;
     LinearLayout layout_day;
     Spinner title_project;
+    Spinner title_activity;
     ProjectAdapter projectAdapter;
-    List<Project> list;
+    ActivityAdapter activityAdapter;
+    List<Project> projectList;
+    List<Activity> activityList;
+    List<ProjectModel> projectModelList;
+    private static String projectID = null;
+
 
     @Nullable
     @Override
@@ -46,37 +55,35 @@ public class CreateFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        projectModelList = new ArrayList<>();
+
         btn_add_day = (ImageButton) view.findViewById(R.id.btn_add_day);
         edt_desc = (EditText) view.findViewById(R.id.edt_desc);
         layout_day = (LinearLayout) view.findViewById(R.id.layout_day);
         title_project = (Spinner) view.findViewById(R.id.title_project);
+        title_activity = (Spinner) view.findViewById(R.id.title_activity);
         btn_logout = (Button) view.findViewById(R.id.btn_logout);
 
-//        SharedPreferences sharedPreferences = getContext().getSharedPreferences("project", Context.MODE_PRIVATE);
-//        String name = sharedPreferences.getString("nameProject", "Default");
-//        String id = sharedPreferences.getString("idProject", "Default");
-//        long time = sharedPreferences.getLong("timeClick", 0);
-//        if(time < System.currentTimeMillis()) {
-//            Log.d("test", "onViewCreated: " + name + " - " + time);
-//        }
-
-        list = new ArrayList<>();
-        list.addAll(Project.getRecentList());
-        list.addAll(Project.getConstantList());
-      /*  list.add(new Project("1", "Java"));
-        list.add(new Project("2", "Android"));
-        list.add(new Project("3", "PHP"));
-        list.add(new Project("4", "C#"));
-        list.add(new Project("5", "ASP.NET"));
-        list.add(new Project("6", "Laravel"));
-        list.add(new Project("7", "React native"));
-        list.add(new Project("8", "IOS"));*/
+        projectList = new ArrayList<>();
+        projectList.addAll(Project.getRecentList());
+        projectList.addAll(Project.getConstantList());
 
 
-        projectAdapter = new ProjectAdapter(getContext(), R.layout.item_project, list);
+        projectAdapter = new ProjectAdapter(getContext(), R.layout.item_project, projectList);
         title_project.setAdapter(projectAdapter);
 
+        activityList = new ArrayList<>();
+        activityList.addAll(Activity.getRecentList());
+        activityList.addAll(Activity.getConstantList());
+
+
+        activityAdapter = new ActivityAdapter(getContext(), R.layout.item_project, activityList);
+        title_activity.setAdapter(activityAdapter);
+
         initListener();
+        for (int i = 0; i < projectModelList.size(); i++) {
+            Log.d("test", "onResume: " + projectModelList.get(i).getProjectId());
+        }
 
     }
 
@@ -102,17 +109,30 @@ public class CreateFragment extends Fragment {
 
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//                Toast.makeText(getContext(), title_project.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
-//                long time= System.currentTimeMillis();
-//                Log.d("test", "onItemSelected: " + time);
-//                SharedPreferences.Editor editor = getContext().getSharedPreferences("project", Context.MODE_PRIVATE).edit();
-//                editor.putString("nameProject", list.get(i).getProjectName());
-//                editor.putString("idProject", list.get(i).getId());
-//                editor.putLong("timeClick", time);
-//                editor.apply();
-                String projectName = list.get(i).getProjectName();
-                String projectId = list.get(i).getId();
-                new Project(projectId, projectName);
+
+                projectAdapter.notifyDataSetChanged();
+                String projectName = projectList.get(i).getProjectName();
+                projectID = projectList.get(i).getId();
+                Log.d("test", "getProjectID: " + projectID);
+                projectModelList.add(new ProjectModel(projectID, projectName));
+                new Project(projectID, projectName);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        title_activity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                activityAdapter.notifyDataSetChanged();
+                String activityName = activityList.get(i).getActivityName();
+                String activityID = activityList.get(i).getId();
+                new Activity(activityID, activityName);
             }
 
             @Override
@@ -123,4 +143,8 @@ public class CreateFragment extends Fragment {
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 }

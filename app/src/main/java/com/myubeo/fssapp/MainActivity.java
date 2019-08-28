@@ -1,5 +1,6 @@
 package com.myubeo.fssapp;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -14,18 +15,29 @@ import com.myubeo.fssapp.fragment.TimeSheetsFragment;
 public class MainActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
+    private static String value = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
+
         initView();
+
+        Intent intent = getIntent();
+        value = intent.getStringExtra("value");
+        Bundle bundle = new Bundle();
+        bundle.putString("value", value);
+        CreateFragment createFragment = new CreateFragment();
+        createFragment.setArguments(bundle);
+
         initListener();
     }
 
     private void initView(){
         bottomNavigationView = findViewById(R.id.bottom_navigation);
+
     }
 
     private void initListener(){
@@ -36,11 +48,11 @@ public class MainActivity extends AppCompatActivity {
 
                 switch (menuItem.getItemId()){
                     case R.id.create_time:
-                        fragment = new CreateFragment();
+                        fragment = CreateFragment.newInstance();
                         break;
 
                     case R.id.record_time:
-                        fragment = new RecordFragment();
+                        fragment = RecordFragment.newInstance();
                         break;
 
                     case R.id.timesheet:
@@ -51,5 +63,10 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+    }
+
+    public static String getApiKey()
+    {
+        return value;
     }
 }

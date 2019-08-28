@@ -19,6 +19,8 @@ import com.google.gson.JsonObject;
 import com.myubeo.fssapp.connect.APIInterface;
 import com.myubeo.fssapp.connect.APIUtils;
 import com.myubeo.fssapp.design.CircleImage;
+import com.myubeo.fssapp.fragment.CreateFragment;
+import com.myubeo.fssapp.presenter.task.IApiKey;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,7 +30,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity{
 
     EditText edt_login_username;
     EditText edt_login_pass;
@@ -37,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
     String userName;
     String passWord;
     String value;
+    Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,10 +110,9 @@ public class LoginActivity extends AppCompatActivity {
                                     for(int i = 0; i < items.length(); i++) {
                                         JSONObject key = items.getJSONObject(i);
                                         value = key.getString("apiKey");
-                                        Log.d("test", "onResponse: "+value );
                                     }
-
                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    intent.putExtra("value", value);
                                     startActivity(intent);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -123,6 +125,8 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(getBaseContext(), "Tài khoản không tồn tại", Toast.LENGTH_LONG).show();
                         }
                     });
+                }else {
+                    Toast.makeText(getApplicationContext(), "Bạn chưa nhập tên đăng nhập hoặc mật khẩu. Vui lòng kiểm tra lại!", Toast.LENGTH_LONG).show();
                 }
 
             }
