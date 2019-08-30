@@ -10,18 +10,16 @@ import android.widget.TextView;
 import com.myubeo.fssapp.R;
 import com.myubeo.fssapp.model.createModel.Activity;
 import com.myubeo.fssapp.model.createModel.ActivityModel;
-import com.myubeo.fssapp.model.createModel.Project;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActivityAdapter extends BaseAdapter {
+public class ActivityModelAdapter extends BaseAdapter {
     Context context;
-    List<Activity> activityList = new ArrayList<>();
-//    List<ActivityModel> activityList = new ArrayList<>();
+    List<ActivityModel> activityList = new ArrayList<>();
     int myLayout;
 
-    public ActivityAdapter(Context context, int myLayout, List<Activity> activityList){
+    public ActivityModelAdapter(Context context, int myLayout, List<ActivityModel> activityList){
         this.activityList = activityList;
         this.context = context;
         this.myLayout = myLayout;

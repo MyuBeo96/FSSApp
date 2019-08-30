@@ -8,28 +8,26 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.myubeo.fssapp.R;
-import com.myubeo.fssapp.model.createModel.Activity;
-import com.myubeo.fssapp.model.createModel.ActivityModel;
 import com.myubeo.fssapp.model.createModel.Project;
+import com.myubeo.fssapp.model.createModel.ProjectModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActivityAdapter extends BaseAdapter {
+public class ProjectModelAdapter extends BaseAdapter {
     Context context;
-    List<Activity> activityList = new ArrayList<>();
-//    List<ActivityModel> activityList = new ArrayList<>();
+    List<ProjectModel> projects = new ArrayList<>();
     int myLayout;
 
-    public ActivityAdapter(Context context, int myLayout, List<Activity> activityList){
-        this.activityList = activityList;
+    public ProjectModelAdapter(Context context, int myLayout, List<ProjectModel> projects){
+        this.projects = projects;
         this.context = context;
         this.myLayout = myLayout;
     }
 
     @Override
     public int getCount() {
-        return  activityList.size();
+        return  projects.size();
     }
 
     @Override
@@ -48,7 +46,7 @@ public class ActivityAdapter extends BaseAdapter {
         View view = inflater.inflate(R.layout.item_project,parent, false);
 
         TextView nameProject = (TextView) view.findViewById(R.id.nameProject);
-        nameProject.setText(activityList.get(position).getActivityName());
+        nameProject.setText(projects.get(position).getProjectName());
 
         return view;
     }

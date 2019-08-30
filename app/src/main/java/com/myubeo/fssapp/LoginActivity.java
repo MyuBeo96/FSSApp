@@ -76,6 +76,10 @@ public class LoginActivity extends AppCompatActivity{
 
                 userName = edt_login_username.getText().toString().trim();
                 passWord = edt_login_pass.getText().toString().trim();
+                SharedPreferences.Editor editor = getSharedPreferences("Login", MODE_PRIVATE).edit();
+                editor.putString("userName", userName);
+                editor.putString("pass", passWord);
+                editor.apply();
 
                 if (userName.length() > 0 && passWord.length() > 0) {
 
@@ -98,10 +102,6 @@ public class LoginActivity extends AppCompatActivity{
                         public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                             if (response.isSuccessful()) {
                                 try {
-                                    SharedPreferences.Editor editor = getSharedPreferences("Login", MODE_PRIVATE).edit();
-                                    editor.putString("userName", userName);
-                                    editor.putString("pass", passWord);
-                                    editor.apply();
 
                                     JSONObject object=new JSONObject(new Gson().toJson(response.body()));
 

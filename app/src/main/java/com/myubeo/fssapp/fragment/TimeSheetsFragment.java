@@ -27,7 +27,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -40,6 +43,10 @@ public class TimeSheetsFragment extends Fragment {
     List<TimeSheetsModel> timeSheetsModels;
     TimeSheetAdapter timeSheetAdapter;
     public String formattedDuration = null;
+
+    private final String pattern = "HH:mm";
+    private DateFormat df = new SimpleDateFormat(pattern);
+
     int number = 0;
 
     @Nullable
@@ -51,25 +58,17 @@ public class TimeSheetsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         rcv_listTime = (RecyclerView) view.findViewById(R.id.rcv_listTime);
-        timeSheetsModels = new ArrayList<TimeSheetsModel>();
-        rcv_listTime.setLayoutManager(new LinearLayoutManager(getContext()));
-        listTimeSheets(number);
-//        timeSheetsModels.add(new TimeSheetsModel("23/08/2019", "215313", "120",
-//                "AGR","Lập trình", "API", "open"));
-//        timeSheetsModels.add(new TimeSheetsModel("23/08/2019", "215313", "120",
-//                "AGR","Lập trình", "API", "open"));
-//        timeSheetsModels.add(new TimeSheetsModel("23/08/2019", "215313", "120",
-//                "AGR","Lập trình", "API", "open"));
 
-        timeSheetAdapter = new TimeSheetAdapter(getContext(), R.layout.item_timesheets, timeSheetsModels);
+        listTimeSheets(number);
     }
 
     public void listTimeSheets(int number){
+        timeSheetsModels = new ArrayList<TimeSheetsModel>();
+        rcv_listTime.setLayoutManager(new LinearLayoutManager(getContext()));
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("id", "1");
         jsonObject.addProperty("jsonrpc", "2.0");
         jsonObject.addProperty("method", "getTimesheet");
-
         JsonArray paramsArray = new JsonArray();
         paramsArray.add(MainActivity.getApiKey());
         paramsArray.add("0");
@@ -96,10 +95,23 @@ public class TimeSheetsFragment extends Fragment {
                             JSONObject key = items.getJSONObject(i);
                             String start = key.getString("start");
                             String end = key.getString("end");
+
+                            long timeStart = Long.parseLong(start);
+                            long timeEnd = Long.parseLong(end);
+                            long work = timeEnd - timeStart;
+
+                            Date dateOnPoint = new Date(timeStart);
+
+                            String activityName = key.getString("activityName");
+                            String projectName = key.getString("projectName");
+                            String description = key.getString("description");
+                            String status = key.getString("status");
+                            String ModifiedTime = key.getString("ModifiedTime");
                             formattedDuration = key.getString("formattedDuration");
-                            timeSheetsModels.add(new TimeSheetsModel("23/08/2019", start , formattedDuration,
-                                    "AGR","Lập trình", "API", "open"));
+                            timeSheetsModels.add(new TimeSheetsModel(ModifiedTime, df.format(dateOnPoint) , formattedDuration,
+                                    projectName,"[ " + activityName + " ]", description, status));
                         }
+                        timeSheetAdapter = new TimeSheetAdapter(getContext(), R.layout.item_timesheets, timeSheetsModels);
                         rcv_listTime.setAdapter(timeSheetAdapter);
 
                     } catch (JSONException e) {
